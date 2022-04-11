@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
 #include <vector>
-#include <fstream>
-#define STR_MAX_SIZE 100
-using std::cout;
-using std::endl;
-using std::string;
 using std::vector;
 
 struct edge
@@ -16,82 +9,50 @@ struct edge
 	{}
 };
 
-bool isEmpty(string& str);
-unsigned getNumber(string& str, size_t& i);
+size_t getMatrixSize(vector<edge>& edges);
+void makeMatrix(unsigned** matrix, vector<edge>& edges);
+void makeSimpleMatrix(unsigned** matrix, size_t size);
 
-void getUserInput(vector<edge>& edges)
+size_t getMatrixSize(vector<edge>& edges)
 {
-	string str;
-	size_t i = 0;
-	size_t j = 0;
+	size_t max = 0;
+
+	max = edges[0].leftVertex;
+	for (size_t i = 0; i < edges.size(); ++i)
+	{
+		if (max < edges[i].leftVertex)
+			max = edges[i].leftVertex;
+		if (max < edges[i].rightVertex)
+			max = edges[i].rightVertex;
+	}
+	return max + 1;
+}
+
+void makeMatrix(unsigned** matrix, vector<edge>& edges)
+{
 	unsigned left = 0;
 	unsigned right = 0;
-
-	std::fstream inputFile;
-	string inputFilePath = "data/input.txt";
-	inputFile.open(inputFilePath, std::ios::in);
-	if (!inputFile.is_open())
+	for (size_t i = 0; i < edges.size(); ++i)
 	{
-		std::cerr << "ERROR: Can not open file \"input.txt\"" << endl;
-		exit(1);
+		left = edges[i].leftVertex;
+		right = edges[i].rightVertex;
+
+		if (left != right)
+			matrix[left][right] += 1;
+		matrix[right][left] += 1;
 	}
+}
 
-	while (getline(inputFile, str))
+void makeSimpleGraph(unsigned** matrix, size_t size)
+{
+	for (size_t i = 1; i < size; ++i)
 	{
-		i = 0;
-		if (isEmpty(str))
-			continue;
-		left = getNumber(str, i);
-		right = getNumber(str, i);
-
-		if (left > 0 && right > 0)
+		for (size_t j = 1; j < size; ++j)
 		{
-			edges.push_back(edge());
-			edges[j].leftVertex = left;		
-			edges[j].rightVertex = right;
-			++j;
+			if (i == j)
+				matrix[i][j] = 0;
+			else if (matrix[i][j] > 1)
+				matrix[i][j] = 1;
 		}
 	}
-
-	if (edges.size() == 0)
-	{
-		std::cerr << "ERROR: input is incorrect";
-		exit (2);
-	}
-	inputFile.close();
-}
-
-bool isEmpty(string& str)
-{
-	size_t i = 0;
-
-	while (str[i])
-	{
-		if (str[i] >= '0' && str[i] <= '9')
-			return false;
-		++i;
-	}
-	
-	return true;
-}
-
-unsigned getNumber(string& str, size_t& i)
-{
-	unsigned vertex = 0;
-
-	while (str[i] && !(str[i] >= '1' && str[i] <= '9'))
-		++i;
-
-	size_t j = 0;
-	while (str[i] >= '0' && str[i] <= '9' && str[i] && j < 5)
-	{
-		vertex = vertex * 10 + (str[i] - '0');
-		++i;
-		++j;
-	}
-
-	while (str[i] && str[i] != ' ')
-		++i;
-
-	return vertex;
 }

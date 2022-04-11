@@ -1,52 +1,56 @@
-.PHONY: all re clear clean fclean debug gcov lcov clean_gcda clean_gcno fclean_glcov
+.PHONY: all re clean fclean debug gcov lcov clean_gcda clean_gcno fclean_glcov
 
 FOLDER=src
 SOURCES=$(wildcard $(FOLDER)/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 CC=g++
-FLAGS=-Wall -Wextra -Werror
+CXXFLAGS=-Wall -Wextra -Werror
+CPPFLAGS=
+STANDARD=--std=c++11
 EXECUTABLE=graph.exe
+RM=rm -f
 LCOVTEST=$(EXECUTABLE:.exe=.info)
+BROWSER=Firefox
 
 all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJECTS)
 	$(CC) $(OBJECTS) -o $@
 
-.cpp.o :
-	$(CC) $(FLAGS) -c $< -o $@
+%.o : %.cpp
+	$(CC) $(STANDARD) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 re : fclean all
 
 clean :
-	rm -f $(OBJECTS)
+	$(RM) $(OBJECTS)
 
 fclean : clean
-	rm -f $(EXECUTABLE)
+	$(RM) $(EXECUTABLE)
 
 debug :
 	gdb $(EXECUTABLE)
 
 gcov :
 	$(CC) $(SOURCES) --coverage -o $(EXECUTABLE)
-	./$(EXECUTABLE)
+	bash $(EXECUTABLE)
 
 lcov :
 	lcov -t "program" -o $(LCOVTEST) -c -d .
 	genhtml -o report $(LCOVTEST)
-	rm -f *.gcda
-	rm -f *.gcno
-	rm -f $(LCOVTEST)
-	rm -f $(EXECUTABLE)
-	open -a "Firefox" report/index.html
+	$(RM) *.gcda
+	$(RM) *.gcno
+	$(RM) $(LCOVTEST)
+	$(RM) $(EXECUTABLE)
+	open -a "$(BROWSER)" report/index.html
 
 clean_gcda :
-	rm -f *.gcda
+	$(RM) *.gcda
 
 clean_gcno :
-	rm -f *.gcno
+	$(RM) *.gcno
 
 fclean_glcov : clean_gcda clean_gcno
-	rm -f $(LCOVTEST)
-	rm -rf report
-	rm -f $(EXECUTABLE)
+	$(RM) $(LCOVTEST)
+	$(RM) -f report
+	$(RM) $(EXECUTABLE)
