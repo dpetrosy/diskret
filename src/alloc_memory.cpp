@@ -1,10 +1,6 @@
-#include <iostream>
+#include "../include/alloc_memory.hpp"
 
-unsigned**	allocMemory(size_t size);
-void		freeMemory(unsigned** matrix, size_t size);
-void		fillZero(unsigned** matrix, size_t size);
-
-unsigned** allocMemory(size_t size)
+unsigned** allocMemory(const size_t size)
 {
 	unsigned** matrix = new(std::nothrow) unsigned*[size];
 	if (!matrix)
@@ -28,7 +24,7 @@ unsigned** allocMemory(size_t size)
 	return matrix;
 }
 
-void freeMemory(unsigned** matrix, size_t size)
+void freeMemory(unsigned** matrix, const size_t size)
 {
 	for (size_t i = 0; i < size; ++i)
 		delete [] matrix[i];
@@ -37,7 +33,7 @@ void freeMemory(unsigned** matrix, size_t size)
 	matrix = nullptr;
 }
 
-void fillZero(unsigned** matrix, size_t size)
+void fillZero(unsigned** matrix, const size_t size)
 {
 	for (size_t i = 0; i < size; ++i)
 	{

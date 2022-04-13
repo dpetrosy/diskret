@@ -1,24 +1,4 @@
-#include <iostream>
-#include <vector>
-using std::cout;
-using std::endl;
-using std::vector;
-
-struct edge
-{
-	unsigned leftVertex;
-	unsigned rightVertex;
-	edge() : leftVertex(0), rightVertex(0)
-	{}
-};
-
-void		getUserInput(vector<edge>& edges);
-size_t		getMatrixSize(vector<edge>& edges);
-unsigned**	allocMemory(size_t size);
-void		freeMemory(unsigned** matrix, size_t size);
-void		makeMatrix(unsigned** matrix, vector<edge>& edges);
-void		makeSimpleGraph(unsigned** matrix, size_t size);
-bool		isGraphConnected(unsigned** matrix, size_t size);
+#include "../include/main.hpp"
 
 int main()
 {
@@ -27,22 +7,22 @@ int main()
 
 	size_t matrixSize = getMatrixSize(edges);
 	unsigned** matrix = allocMemory(matrixSize);
+
 	makeMatrix(matrix, edges);
 	makeSimpleGraph(matrix, matrixSize);
 	
-	if (!isGraphConnected(matrix, matrixSize))
+	vector<unsigned> vertices[matrixSize];
+	if (!isGraphConnected(matrix, matrixSize, vertices))
 	{
-		cout << "Inputted graph is not connected!" << endl;	
+		cout << "Inputed graph is not connected!" << endl;	
 		cout << "Correct your input and try again." << endl;
 		freeMemory(matrix, matrixSize);
 		return 0;
 	}
-	cout << endl << "Inputted graph is connected!" << endl;
 
-
-
-
+	//////////////////////////////////////////////////////////////
 	// ------------------------------COUT-------------------------
+	cout << endl << "Inputed graph is connected!" << endl << endl;
 	for (size_t i = 0; i < edges.size(); ++i)
 	{
 		cout << "left vertex  =  " << edges[i].leftVertex << "   " << "right vertex  =  " << edges[i].rightVertex << endl;
@@ -58,8 +38,14 @@ int main()
 	}
 	cout << endl << endl;
 	// ------------------------------COUT-------------------------
+	//////////////////////////////////////////////////////////////
 
 
+	bool visVertices[matrixSize];
+	fillArray(visVertices, false, matrixSize);
+	cout << "Found spannig tree nodes:  ";
+	dfs(vertices, visVertices, 1, true, matrixSize);
+	cout << endl << endl;
 
 	freeMemory(matrix, matrixSize);
 	return 0;

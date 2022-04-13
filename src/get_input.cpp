@@ -1,23 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#define STR_MAX_SIZE 100
-using std::endl;
-using std::string;
-using std::vector;
-
-struct edge
-{
-	unsigned leftVertex;
-	unsigned rightVertex;
-	edge() : leftVertex(0), rightVertex(0)
-	{}
-};
-
-void getUserInput(vector<edge>& edges);
-bool isEmpty(string& str);
-unsigned getNumber(string& str, size_t& i);
+#include "../include/get_input.hpp"
 
 void getUserInput(vector<edge>& edges)
 {
@@ -84,7 +65,7 @@ unsigned getNumber(string& str, size_t& i)
 		++i;
 
 	size_t j = 0;
-	while (isdigit(str[i]) && str[i] && j < 5)
+	while (isdigit(str[i]) && str[i] && j < VERTEX_DIGITS_MAX_COUNT)
 	{
 		vertex = vertex * 10 + (str[i] - '0');
 		++i;

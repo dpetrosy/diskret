@@ -1,17 +1,4 @@
-#include <vector>
-using std::vector;
-
-struct edge
-{
-	unsigned leftVertex;
-	unsigned rightVertex;
-	edge() : leftVertex(0), rightVertex(0)
-	{}
-};
-
-size_t getMatrixSize(vector<edge>& edges);
-void makeMatrix(unsigned** matrix, vector<edge>& edges);
-void makeSimpleMatrix(unsigned** matrix, size_t size);
+#include "../include/make_matrix.hpp"
 
 size_t getMatrixSize(vector<edge>& edges)
 {
@@ -43,7 +30,7 @@ void makeMatrix(unsigned** matrix, vector<edge>& edges)
 	}
 }
 
-void makeSimpleGraph(unsigned** matrix, size_t size)
+void makeSimpleGraph(unsigned** matrix, const size_t size)
 {
 	for (size_t i = 1; i < size; ++i)
 	{
