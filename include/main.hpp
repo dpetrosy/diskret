@@ -26,7 +26,9 @@ void		makeSimpleGraph(unsigned** matrix, const size_t size);
 bool		isGraphConnected(unsigned** matrix, const size_t size, vector<unsigned>* vertices);
 void		fillArray(bool* arr, bool elem, const size_t size);
 void		dfs(vector<unsigned>* vertices, bool* visVertices, unsigned vertex, bool isFindingTree, size_t size);
-bool fileExists(const std::string& name);
-void inputedGraphViz(vector<edge>& edges);
+bool        fileExists(const std::string& name);
+void        graphViz(vector<edge>& edges, const std::string& fileName);
+void        dfsFindTree(vector<unsigned>* vertices, bool* visVertices, unsigned vertex, vector<edge>& treeEdges);
+void        displayMatrix(unsigned** matrix, size_t matrixSize);
 
 #endif  /* MAIN_HPP */

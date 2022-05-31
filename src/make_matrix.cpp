@@ -43,3 +43,16 @@ void makeSimpleGraph(unsigned** matrix, const size_t size)
 		}
 	}
 }
+
+void displayMatrix(unsigned** matrix, size_t matrixSize)
+{
+	for (size_t i = 1; i < matrixSize; ++i)
+	{
+        std::cout << std::endl;
+		for (size_t j = 1; j < matrixSize; ++j)
+		{
+            std::cout << matrix[i][j] << "  ";
+		}
+	}
+    std::cout << std::endl << std::endl;
+}

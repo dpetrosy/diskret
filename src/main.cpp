@@ -5,7 +5,7 @@ int main()
 	vector<edge> edges;
 	getUserInput(edges);
 
-    inputedGraphViz(edges);
+    graphViz(edges, "input.dot");
     if (!fileExists("data/input.dot"))
     {
         std::cerr << "File \"input.dot\" was not created, try again!\n";
@@ -18,30 +18,17 @@ int main()
 
 	makeMatrix(matrix, edges);
 
-
-
-    //////////////////////////////////////////////////////////////
-	// ------------------------------COUT-------------------------
-	cout << endl << "Inputed graph is connected!" << endl << endl;
-	for (size_t i = 0; i < edges.size(); ++i)
+    /////////////////////////////////////////////////////
+	// -------------------------OUTPUT-------------------
+	cout << endl;
+    for (size_t i = 0; i < edges.size(); ++i)
 	{
 		cout << "left vertex  =  " << edges[i].leftVertex << "   " << "right vertex  =  " << edges[i].rightVertex << endl;
 	}
-	cout << endl << "----------------Matrix-----------------" << endl;
-	for (size_t i = 1; i < matrixSize; ++i)
-	{
-		cout << endl;
-		for (size_t j = 1; j < matrixSize; ++j)
-		{
-			cout << matrix[i][j] << "  ";
-		}
-	}
-	cout << endl << endl;
-	// ------------------------------COUT-------------------------
-	//////////////////////////////////////////////////////////////
-
-
-
+	cout << endl << "-------Inputed Graph Adjacency Matrix-------" << endl;
+    displayMatrix(matrix, matrixSize);
+	// -------------------------OUTPUT--------------------
+	//////////////////////////////////////////////////////
 
 	makeSimpleGraph(matrix, matrixSize);
 	
@@ -49,37 +36,27 @@ int main()
 	if (!isGraphConnected(matrix, matrixSize, vertices))
 	{
 		cout << "Inputed graph is not connected!" << endl;	
-		cout << "Correct your input and try again." << endl;
+		cout << "Correct your input and try again." << endl << endl;
 		freeMemory(matrix, matrixSize);
-		return 0;
+		exit(1);
 	}
 
-	//////////////////////////////////////////////////////////////
-	// ------------------------------COUT-------------------------
-	cout << endl << "Inputed graph is connected!" << endl << endl;
-	for (size_t i = 0; i < edges.size(); ++i)
-	{
-		cout << "left vertex  =  " << edges[i].leftVertex << "   " << "right vertex  =  " << edges[i].rightVertex << endl;
-	}
-	cout << endl << "----------------Matrix-----------------" << endl;
-	for (size_t i = 1; i < matrixSize; ++i)
-	{
-		cout << endl;
-		for (size_t j = 1; j < matrixSize; ++j)
-		{
-			cout << matrix[i][j] << "  ";
-		}
-	}
-	cout << endl << endl;
-	// ------------------------------COUT-------------------------
-	//////////////////////////////////////////////////////////////
-
+    cout << "Inputed graph is connected!" << endl;
+	cout << endl << "-------Simple Graph Adjacency Matrix-------" << endl;
+    displayMatrix(matrix, matrixSize);
 
 	bool visVertices[matrixSize];
 	fillArray(visVertices, false, matrixSize);
-	cout << "Found spannig tree nodes:  ";
-	dfs(vertices, visVertices, 1, true, matrixSize);
-	cout << endl << endl;
+    vector<edge> treeEdges;
+	dfsFindTree(vertices, visVertices, 1, treeEdges);
+    
+    graphViz(treeEdges, "tree.dot");
+    if (!fileExists("data/tree.dot"))
+    {
+        std::cerr << "File \"tree.dot\" was not created, try again!\n";
+        exit(4);
+    }
+    system("dot -Tpng -O data/tree.dot && xdg-open data/tree.dot.png");
 
 	freeMemory(matrix, matrixSize);
 	return 0;

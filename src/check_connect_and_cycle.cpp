@@ -8,7 +8,7 @@ bool isGraphConnected(unsigned** matrix, const size_t size, vector<unsigned>* ve
 	
 	bool visVertices[size];
 	fillArray(visVertices, false, size);
-	dfs(vertices, visVertices, 1, false, size);
+	dfs(vertices, visVertices, 1);
 
 	for (size_t i = 1; i < size; ++i)
 	{
@@ -48,24 +48,29 @@ void fillArray(bool* arr, bool elem, const size_t size)
 	}
 }
 
-void dfs(vector<unsigned>* vertices, bool* visVertices, unsigned vertex, bool isFindingTree, size_t size)
+void dfs(vector<unsigned>* vertices, bool* visVertices, unsigned vertex)
 {
-	if (isFindingTree)
-	{
-		static size_t count = 2;
-		cout << vertex;
-		if (count < size)
-		{
-			cout << "  =>  ";
-			++count; 
-		}
-	}
-
 	visVertices[vertex] = true;
 
 	for (auto i : vertices[vertex])
 	{
 		if (visVertices[i] == false)
-			dfs(vertices, visVertices, i, isFindingTree, size);
+			dfs(vertices, visVertices, i);
+	}
+}
+
+void dfsFindTree(vector<unsigned>* vertices, bool* visVertices, unsigned vertex, vector<edge>& treeEdges)
+{
+	visVertices[vertex] = true;
+
+	for (auto i : vertices[vertex])
+	{
+		if (visVertices[i] == false)
+        {
+            treeEdges.push_back(edge());
+            treeEdges[treeEdges.size() - 1].leftVertex = vertex;
+			treeEdges[treeEdges.size() - 1].rightVertex = i;
+            dfsFindTree(vertices, visVertices, i, treeEdges);
+        }
 	}
 }

@@ -1,16 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <fstream>
-using std::endl;
-using std::vector;
-
-struct edge
-{
-	unsigned leftVertex;
-	unsigned rightVertex;
-	edge() : leftVertex(0), rightVertex(0)
-	{}
-};
+#include "../include/graph_vizualization.hpp"
 
 bool fileExists(const std::string& name) 
 {
@@ -26,14 +14,14 @@ bool fileExists(const std::string& name)
     }
 }
 
-void inputedGraphViz(vector<edge>& edges)
+void graphViz(vector<edge>& edges, const std::string& fileName)
 {
     std::fstream pngFile;
-    pngFile.open("data/input.dot", std::ios::out);
+    pngFile.open("data/" + fileName, std::ios::out);
 
     if (!pngFile.is_open())
     {
-        std::cerr << "Can not open file \"input.dot\", try again!";
+        std::cerr << "Can not open file \"" << fileName << "\", try again!";
         exit(5);
     }
 
