@@ -8,9 +8,9 @@ CXXFLAGS=-Wall -Wextra -Werror
 CPPFLAGS=
 STANDARD=--std=c++11
 EXECUTABLE=graph.exe
-RM=rm -f
+RM=rm -rf
 LCOVTEST=$(EXECUTABLE:.exe=.info)
-BROWSER=Firefox
+BROWSER=google-chrome
 
 all : $(EXECUTABLE)
 
@@ -18,7 +18,7 @@ $(EXECUTABLE) : $(OBJECTS)
 	$(CC) $(OBJECTS) -o $@
 
 %.o : %.cpp
-	$(CC) $(STANDARD) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(STANDARD) $(CPPFLAGS) $(CXXFLAGS) -c -g $< -o $@
 
 re : fclean all
 
@@ -42,7 +42,7 @@ lcov :
 	$(RM) *.gcno
 	$(RM) $(LCOVTEST)
 	$(RM) $(EXECUTABLE)
-	open -a "$(BROWSER)" report/index.html
+	$(BROWSER) report/index.html
 
 clean_gcda :
 	$(RM) *.gcda
@@ -52,5 +52,5 @@ clean_gcno :
 
 fclean_glcov : clean_gcda clean_gcno
 	$(RM) $(LCOVTEST)
-	$(RM) -f report
+	$(RM) report
 	$(RM) $(EXECUTABLE)

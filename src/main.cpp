@@ -5,10 +5,44 @@ int main()
 	vector<edge> edges;
 	getUserInput(edges);
 
+    inputedGraphViz(edges);
+    if (!fileExists("data/input.dot"))
+    {
+        std::cerr << "File \"input.dot\" was not created, try again!\n";
+        exit(4);
+    }
+    system("dot -Tpng -O data/input.dot && xdg-open data/input.dot.png");
+
 	size_t matrixSize = getMatrixSize(edges);
 	unsigned** matrix = allocMemory(matrixSize);
 
 	makeMatrix(matrix, edges);
+
+
+
+    //////////////////////////////////////////////////////////////
+	// ------------------------------COUT-------------------------
+	cout << endl << "Inputed graph is connected!" << endl << endl;
+	for (size_t i = 0; i < edges.size(); ++i)
+	{
+		cout << "left vertex  =  " << edges[i].leftVertex << "   " << "right vertex  =  " << edges[i].rightVertex << endl;
+	}
+	cout << endl << "----------------Matrix-----------------" << endl;
+	for (size_t i = 1; i < matrixSize; ++i)
+	{
+		cout << endl;
+		for (size_t j = 1; j < matrixSize; ++j)
+		{
+			cout << matrix[i][j] << "  ";
+		}
+	}
+	cout << endl << endl;
+	// ------------------------------COUT-------------------------
+	//////////////////////////////////////////////////////////////
+
+
+
+
 	makeSimpleGraph(matrix, matrixSize);
 	
 	vector<unsigned> vertices[matrixSize];

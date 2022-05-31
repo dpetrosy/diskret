@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
+#include <unistd.h>
 using std::cout;
 using std::endl;
 using std::vector;
@@ -24,5 +26,7 @@ void		makeSimpleGraph(unsigned** matrix, const size_t size);
 bool		isGraphConnected(unsigned** matrix, const size_t size, vector<unsigned>* vertices);
 void		fillArray(bool* arr, bool elem, const size_t size);
 void		dfs(vector<unsigned>* vertices, bool* visVertices, unsigned vertex, bool isFindingTree, size_t size);
+bool fileExists(const std::string& name);
+void inputedGraphViz(vector<edge>& edges);
 
 #endif  /* MAIN_HPP */
